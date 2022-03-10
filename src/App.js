@@ -1,12 +1,10 @@
 import React from 'react';
-import UserInfo from './components/UserInfo';
-import UserInfoDescription from './components/UserInfoDescription';
+import Search from './components/Search';
 
 function App() {
   return (
     <>
-      <UserInfo />
-      <UserInfoDescription />
+      <Search />
     </>
   );
 }
