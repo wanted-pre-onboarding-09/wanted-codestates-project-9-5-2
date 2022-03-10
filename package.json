@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
@@ -47,6 +48,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-react": "^7.29.3",
+    "postcss": "^8.4.8",
+    "postcss-loader": "^6.2.1",
+    "postcss-nested": "^5.0.6",
     "prettier": "^2.5.1"
   }
 }
