@@ -1,0 +1,31 @@
+body {
+  --tw-space-x-reverse: 0;
+}
+.user-info__container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.user-info__image {
+  width: 48px;
+  height: 48px;
+  border-radius: 1rem;
+}
+
+.user-info__info {
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+  font-size: 0.8rem;
+  color: rgb(75, 85, 99);
+  line-height: 1.25rem;
+}
+
+.user-info__link {
+  font-weight: 600;
+}
+
+.user-info__name {
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
