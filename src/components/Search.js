@@ -19,6 +19,7 @@ const Search = ({ getStarredRepositories, inputRef, user }) => {
         <input
           type="text"
           placeholder="Github 아이디 검색"
+          spellCheck={false}
           className={styles.input}
           ref={inputRef}
           onKeyPress={onSearch}
