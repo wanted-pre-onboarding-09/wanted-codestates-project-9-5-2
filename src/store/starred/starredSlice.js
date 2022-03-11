@@ -24,8 +24,10 @@ const userSlice = createSlice({
     builder.addCase(getStarred.fulfilled, (state, { payload: data }) => {
       state.starredData = data.data.map((repo) => {
         return {
+          id: repo.id,
           owner: repo.owner,
           url: repo.url,
+          repoName: repo.name,
         };
       });
     });

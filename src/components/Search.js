@@ -1,28 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../store/user/userAsyncThunk';
+import React from 'react';
 import styles from './Search.module.css';
 import UserInfo from './UserInfo';
 import UserInfoDescription from './UserInfoDescription';
 
-const Search = (props) => {
-  const inputRef = useRef();
-  const dispatch = useDispatch();
-  const { avartar, nickname } = useSelector((state) => state.user);
-  const [userId, setUserId] = useState('mynameisjisoo');
-
+const Search = ({ getStarredRepositories, inputRef, user }) => {
   const onSearch = (event) => {
     if (event.key === 'Enter') {
-      const value = inputRef.current.value;
+      const value = inputRef.current?.value;
       if (value === '') return;
-      setUserId(value);
+      getStarredRepositories(value);
     }
   };
 
-  useEffect(() => {
-    dispatch(getUser({ userId: userId }));
-  }, [userId]);
-
+  console.log(user);
   return (
     <div className={styles.container}>
       <div>
@@ -35,14 +25,22 @@ const Search = (props) => {
         />
         <span className={styles.enter}>⏎</span>
       </div>
-      {userId && (
+      {user && (
         <>
-          <UserInfo avartar={avartar} nickname={nickname} userId={userId} />
+          <UserInfo
+            avartar={user.avatar_url}
+            userId={user.login}
+            nickname={user.name}
+          />
           <UserInfoDescription />
         </>
       )}
     </div>
   );
 };
+
+// Search.propTypes = {
+//   setStarredData: PropTypes.func,
+// };
 
 export default Search;

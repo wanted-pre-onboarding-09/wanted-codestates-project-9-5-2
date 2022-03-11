@@ -4,6 +4,7 @@ import { getUser } from './userAsyncThunk';
 const initialState = {
   userLoading: false,
   userError: false,
+  id: null,
   avartar: null,
   nickname: null,
 };
@@ -23,6 +24,7 @@ const userSlice = createSlice({
       state.userError = true;
     });
     builder.addCase(getUser.fulfilled, (state, { payload: data }) => {
+      state.id = data.data.id;
       state.avartar = data.data.avatar_url;
       state.nickname = data.data.name;
     });
