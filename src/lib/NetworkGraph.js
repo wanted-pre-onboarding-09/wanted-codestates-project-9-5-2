@@ -373,26 +373,8 @@ function drawLabel($ctx, node) {
 }
 
 export class NetworkGraph extends EventEMitter {
-  // nodes;
-  // nodeIndexes;
-  // edges;
-  // edgeIndexes;
-
-  // width;
-  // height;
-
-  // $forceCenter;
-  // $forceLink;
-
-  // $simulator;
-  // $transform;
-
-  // renderTick;
-
-  // latestMovedNode;
-
-  // timeoutMousemoveOnZoom;
   constructor($canvas, initDatas) {
+    console.log('constructor start', $canvas, initDatas);
     super();
     initDatas = initDatas ?? {};
     const { width, height } = $canvas.getBoundingClientRect();
@@ -415,12 +397,9 @@ export class NetworkGraph extends EventEMitter {
     }
 
     this.nodes = initDatas.nodes ?? [];
-    console.log('this.initDatas', this.initDatas);
-    console.log('this.nodes', this.nodes);
     this.nodeIndexes = new Map(this.nodes.map((node) => [node.id, node]));
-    console.log('this.nodeIndexes', this.nodeIndexes);
     this.edges = initDatas.edges ?? [];
-    console.log(this.edges);
+
     this.edgeIndexes = new Map(
       this.edges.map((edge) => {
         const source =
@@ -440,12 +419,10 @@ export class NetworkGraph extends EventEMitter {
         return [edgeId, edge];
       }),
     );
-    console.log('this.edgeIndexes', this.edgeIndexes);
+    console.log(this.edgeIndexes);
 
     this.$simulator.nodes(this.nodes);
-    console.log('this.$simulator', this.$simulator.nodes(this.nodes));
     this.$forceLink.links(this.edges);
-    console.log('this.$forceLink', this.$forceLink.links(this.edges));
 
     this.onTick = this.onTick.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -469,9 +446,11 @@ export class NetworkGraph extends EventEMitter {
     }
 
     selectedCanvas.property('__zoom', () => this.$transform);
+    console.log('constructor end');
   }
 
   dump() {
+    console.log('dump');
     return {
       nodes: this.nodes.slice(),
       edges: this.edges.map(({ source, target, distance, direction }) => ({
@@ -488,6 +467,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   clear() {
+    console.log('clear');
     this.nodes = [];
     this.nodeIndexes.clear();
     this.edges = [];
@@ -496,12 +476,14 @@ export class NetworkGraph extends EventEMitter {
   }
 
   destroy() {
+    console.log('destroy');
     this.$simulator.stop();
     this.$canvas?.removeEventListener('click', this.onClick);
     this.$canvas?.removeEventListener('mousemove', this.onMove);
   }
 
   resize() {
+    console.log('resize');
     const { width, height } = this.$canvas.getBoundingClientRect();
 
     this.width = this.$canvas.width = width;
@@ -512,6 +494,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   focusNode(id) {
+    console.log('focusNode');
     const foundNode = this.$simulator.nodes().find((node) => node.id === id);
     if (foundNode?.x && foundNode?.y) {
       const targetX = foundNode.x;
@@ -522,6 +505,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   pushOrMergeNode(node, merge) {
+    console.log('pushOrMergeNode');
     const foundNode = this.nodeIndexes.get(node.id);
     if (!foundNode) {
       this.nodes.push(node);
@@ -534,6 +518,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   getGraphPositionAndSize() {
+    console.log('getGraphPositionAndSize');
     const isNumber = (d) => d;
     const [minX, maxX, minY, maxY] = [
       min(this.nodes.map((node) => node.x ?? 0).filter(isNumber)),
@@ -557,8 +542,9 @@ export class NetworkGraph extends EventEMitter {
   }
 
   addNodeOrMerge(node, merge, beforeNode) {
+    console.log('addNodeOrMerge');
     const foundNode = this.nodeIndexes.get(node.id);
-    console.log('addNodeOrMerge', foundNode);
+    console.log('addNodeOrMerge', node);
 
     if (!foundNode) {
       const { width, height, center } = this.getGraphPositionAndSize();
@@ -577,10 +563,12 @@ export class NetworkGraph extends EventEMitter {
   }
 
   addNode(node) {
+    console.log('addNode');
     this.addNodeOrMerge(node, PASS);
   }
 
   addEdge({ source, target, direction, distance }) {
+    console.log('addEdge', direction);
     let edgeId = `${source}|${target}`;
     if (source > target) {
       edgeId = `${target}|${source}`;
@@ -615,6 +603,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   findNodeByPosition(x, y) {
+    console.log('findNodeByPosition');
     for (const node of this.$simulator.nodes()) {
       const dx = x - node.x;
       const dy = y - node.y;
@@ -626,6 +615,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   onClick(e) {
+    console.log('onClick');
     const { left, top } = e.target.getBoundingClientRect();
     const node = this.findNodeByPosition(
       this.$transform.invertX(e.x - left),
@@ -638,6 +628,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   onMove(e) {
+    console.log('onMove');
     const { left, top } = e.target.getBoundingClientRect();
     const node = this.findNodeByPosition(
       this.$transform.invertX(e.x - left),
@@ -654,20 +645,22 @@ export class NetworkGraph extends EventEMitter {
   }
 
   onZoom(event) {
+    console.log('onZoom');
     this.$transform = event.transform;
     this.onTick();
     this.emit('zoom');
   }
 
   onTick() {
+    console.log('onTick');
     const $ctx = this.$canvas?.getContext('2d');
     if ($ctx) {
-      console.log('ctx는', $ctx);
       this.onDrawGraph($ctx);
     }
   }
 
   onDrawGraph($ctx) {
+    console.log('onDrawGraph');
     console.log('그래프 그리기 시작');
     $ctx.save();
     $ctx.clearRect(0, 0, this.width, this.height);
@@ -712,11 +705,12 @@ export class NetworkGraph extends EventEMitter {
       }
     }
     $ctx.restore();
+    console.log('그래프 그리기 ㄲㅡㅌ');
   }
 
   render() {
+    console.log('render start');
     if (!this.renderTick) {
-      console.log('렌더러러러');
       this.renderTick = setTimeout(() => {
         this.renderTick = null;
         this.$simulator.nodes(this.nodes);
@@ -724,5 +718,6 @@ export class NetworkGraph extends EventEMitter {
         this.$simulator.alpha(0.1).restart();
       }, 0);
     }
+    console.log('render end');
   }
 }

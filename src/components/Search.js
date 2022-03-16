@@ -40,8 +40,4 @@ const Search = ({ getStarredRepositories, inputRef, user }) => {
   );
 };
 
-// Search.propTypes = {
-//   setStarredData: PropTypes.func,
-// };
-
 export default Search;

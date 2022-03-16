@@ -8,9 +8,6 @@ function App() {
   const [user, setUser] = useState();
   const userRepogitoriesMap = useRef(new Map());
 
-  // console.log(canvasRef);
-  console.log(userRepogitoriesMap);
-
   let $graph;
 
   const onResize = () => {
@@ -43,8 +40,6 @@ function App() {
       $graph = new NetworkGraph(canvasRef.current);
     }
     for (const [user, repos] of userRepogitoriesMap.current) {
-      console.log(user);
-      console.log(repos);
       $graph.addNode({
         id: user.id,
         label: user.login,
@@ -91,14 +86,6 @@ function App() {
     };
   }, []);
 
-  // console.log(starredData);
-
-  // useEffect(() => {
-  //   const map = new Map();
-
-  //   map.set(starredData.slice(0, starredData.length + 1));
-  //   console.log(map);
-  // }, [starredData]);
   return (
     <>
       <Search
