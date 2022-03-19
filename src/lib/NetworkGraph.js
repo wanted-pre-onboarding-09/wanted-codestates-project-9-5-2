@@ -379,6 +379,8 @@ export class NetworkGraph extends EventEMitter {
     initDatas = initDatas ?? {};
     const { width, height } = $canvas.getBoundingClientRect();
 
+    this.renderTick = null;
+    this.$canvas = $canvas;
     this.width = $canvas.width = width;
     this.height = $canvas.height = height;
 
@@ -399,7 +401,6 @@ export class NetworkGraph extends EventEMitter {
     this.nodes = initDatas.nodes ?? [];
     this.nodeIndexes = new Map(this.nodes.map((node) => [node.id, node]));
     this.edges = initDatas.edges ?? [];
-
     this.edgeIndexes = new Map(
       this.edges.map((edge) => {
         const source =
@@ -555,6 +556,7 @@ export class NetworkGraph extends EventEMitter {
       Object.assign(node, { x, y });
       this.nodes.push(node);
       this.nodeIndexes.set(node.id, node);
+
       this.render();
     } else {
       Object.assign(foundNode, merge(node, foundNode));
@@ -603,7 +605,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   findNodeByPosition(x, y) {
-    console.log('findNodeByPosition');
+    // console.log('findNodeByPosition');
     for (const node of this.$simulator.nodes()) {
       const dx = x - node.x;
       const dy = y - node.y;
@@ -628,7 +630,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   onMove(e) {
-    console.log('onMove');
+    // console.log('onMove');
     const { left, top } = e.target.getBoundingClientRect();
     const node = this.findNodeByPosition(
       this.$transform.invertX(e.x - left),
@@ -645,7 +647,7 @@ export class NetworkGraph extends EventEMitter {
   }
 
   onZoom(event) {
-    console.log('onZoom');
+    // console.log('onZoom');
     this.$transform = event.transform;
     this.onTick();
     this.emit('zoom');
@@ -710,6 +712,8 @@ export class NetworkGraph extends EventEMitter {
 
   render() {
     console.log('render start');
+    console.log(this.renderTick);
+
     if (!this.renderTick) {
       this.renderTick = setTimeout(() => {
         this.renderTick = null;

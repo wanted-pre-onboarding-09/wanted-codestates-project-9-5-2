@@ -36,9 +36,12 @@ function App() {
 
   useEffect(() => {
     console.log('graph에 노드랑 엣지 추가 시작');
+    if (!userRepogitoriesMap.current.size) return;
     if (!$graph) {
       $graph = new NetworkGraph(canvasRef.current);
     }
+    // $graph = new NetworkGraph(canvasRef.current);
+
     for (const [user, repos] of userRepogitoriesMap.current) {
       $graph.addNode({
         id: user.id,
@@ -69,6 +72,7 @@ function App() {
       return;
     }
     $graph = new NetworkGraph(canvasRef.current.value);
+
     $graph.on('click_node', (node) => {
       if (node.extra) {
         inputRef.current.value = null;
